@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="8dp">
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        tools:text="Do this"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:id="@+id/textView_item_header"
+        android:layout_marginRight="16dp"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        tools:text="25.05.2018"
+        android:textSize="18sp"
+        android:id="@+id/textView_item_date"
+        android:layout_below="@id/textView_item_header"
+        android:layout_marginRight="16dp"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/textView_item_date"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/spinner_task_status"/>
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_item_date"
+        tools:text="This is a description to this particular task"
+        android:id="@+id/textView_item_comment"
+        android:layout_marginTop="8dp"/>
+
+</RelativeLayout>
