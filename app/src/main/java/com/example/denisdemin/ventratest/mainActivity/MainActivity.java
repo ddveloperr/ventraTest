@@ -34,4 +34,8 @@ public class MainActivity extends AppCompatActivity {
         t.addToBackStack(fragment.getTag()).replace(R.id.frameContainer,fragment)
                 .commit();
     }
+
+    public void popBackStack(){
+        getSupportFragmentManager().popBackStackImmediate();
+    }
 }

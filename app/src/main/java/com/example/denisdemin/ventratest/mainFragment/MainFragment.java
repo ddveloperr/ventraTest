@@ -18,8 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.denisdemin.ventratest.R;
+import com.example.denisdemin.ventratest.data.model.Task;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,8 +65,8 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
 
         floatingActionButton.setOnClickListener(this);
 
-        createAddDialog();
-        createDateDialog();
+        mPresenter.onViewCreated();
+
     }
 
     @Override
@@ -94,7 +97,10 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
 
     @Override
     public void createDateDialog(){
-        datePickerDialog = new DatePickerDialog(getContext(),this, Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH);
+        datePickerDialog = new DatePickerDialog(getContext(),this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
@@ -124,6 +130,7 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        month++;
         textViewDate.setText(new StringBuilder().append(day).append(".").append(month).append(".").append(year).toString());
         hideDateDialog();
     }
@@ -131,5 +138,15 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
     @Override
     public void showToast(String message) {
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void initRecycler(List<Task> list) {
+        recyclerView.setAdapter(new MainRecyclerAdapter(getContext(),list));
+    }
+
+    @Override
+    public void updateRecycler(List<Task> list) {
+
     }
 }

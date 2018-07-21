@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:id="@+id/item_container">
     
     <TextView
         android:layout_width="wrap_content"
@@ -23,12 +24,15 @@
         android:layout_below="@id/textView_item_header"
         android:layout_marginRight="16dp"/>
 
-    <android.support.v7.widget.AppCompatSpinner
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/textView_item_date"
         android:layout_alignParentEnd="true"
-        android:id="@+id/spinner_task_status"/>
+        android:id="@+id/textView_task_status"
+        tools:text="New"
+        android:textAlignment="textEnd"
+        android:textSize="18sp"/>
     
     <TextView
         android:layout_width="wrap_content"

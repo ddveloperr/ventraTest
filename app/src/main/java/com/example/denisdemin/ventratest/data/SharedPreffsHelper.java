@@ -47,17 +47,22 @@ public class SharedPreffsHelper {
         return new Gson().fromJson(json,type);
     }
 
-    public void changeTaskStatus(Task task,String status){
+    public void updateTask(String header,String date,String comment,String status,int position){
         List<Task> taskList = getTaskList();
 
-        for(int i=0;i<taskList.size();i++){
-            if(taskList.get(i)==task){
-                taskList.get(i).setStatus(status);
-                break;
-            }
-        }
+        taskList.get(position).setHeader(header);
+        taskList.get(position).setDate(date);
+        taskList.get(position).setComments(comment);
+        taskList.get(position).setStatus(status);
+
         updateList(taskList);
 
+    }
+
+    public void deleteTask(int position){
+        List<Task> taskList = getTaskList();
+        taskList.remove(position);
+        updateList(taskList);
     }
 
     private void updateList(List<Task> list){

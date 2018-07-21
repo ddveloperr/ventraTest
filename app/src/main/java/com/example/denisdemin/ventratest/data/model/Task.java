@@ -6,9 +6,11 @@ public class Task {
     private String comments;
     private String status;
 
-    public String statusNew="New";
-    public String statusPending="Pending";
-    public String statusDone="Done";
+    public static final String statusNew="New";
+    public static final String statusPending="Pending";
+    public static final String statusDone="Done";
+
+    public static final String[] statusList={statusNew,statusPending, statusDone};
 
 
     public Task(String header, String date, String comments) {
