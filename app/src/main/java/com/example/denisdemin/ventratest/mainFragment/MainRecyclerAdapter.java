@@ -66,10 +66,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MainViewHolder myHolder = (MainViewHolder) holder;
 
-
-
-
-
         final String header = taskList.get(position).getHeader();
         final String date = taskList.get(position).getDate();
         final String comment = taskList.get(position).getComments();
@@ -80,7 +76,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter {
         myHolder.textViewDate.setText(date);
         myHolder.textViewComment.setText(comment);
         myHolder.textViewTaskStatus.setText(status);
-        myHolder.textViewTaskStatus.setTextColor(getStatusColor(status));
 
         myHolder.itemContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,25 +90,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter {
             }
         });
 
-    }
-
-    private int getStatusColor(String status){
-        int color;
-        switch (status){
-            case Task.statusNew:
-                color =  R.color.colorNew;
-                break;
-            case Task.statusPending:
-                color = R.color.colorPending;
-                break;
-            case Task.statusDone:
-                color = R.color.colorDone;
-                break;
-                default:
-                    color = R.color.colorPrimaryDark;
-                    break;
-        }
-        return color;
     }
 
     @Override
