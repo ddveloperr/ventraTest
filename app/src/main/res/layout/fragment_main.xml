@@ -20,4 +20,14 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         app:fabSize="normal"/>
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_sort_white_24dp"
+        android:id="@+id/fabSort"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/fabMain"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="8dp"
+        app:fabSize="mini"/>
 </RelativeLayout>

@@ -15,13 +15,14 @@ public class SharedPreffsHelper {
     private Context context;
     private static String preferece ="PREFERENCE";
     private static String key_task_list = "key_task_list";
+    private static String key_list_sorted="key_list_sorted";
 
     public SharedPreffsHelper(Context context) {
         this.context = context;
     }
 
-    public void addToTaskList(String header,String date,String comments){
-        Task newTask = new Task(header, date, comments);
+    public void addToTaskList(Task task){
+        Task newTask = task;
 
         Type type = new TypeToken<List<Task>>(){}.getType();
 
@@ -69,5 +70,13 @@ public class SharedPreffsHelper {
         Type type = new TypeToken<List<Task>>(){}.getType();
         String newJson = new Gson().toJson(list,type);
         context.getSharedPreferences(preferece,Context.MODE_PRIVATE).edit().putString(key_task_list,newJson).apply();
+    }
+
+    public boolean getSortedList(){
+        return context.getSharedPreferences(preferece,Context.MODE_PRIVATE).getBoolean(key_list_sorted,false);
+    }
+
+    public void setReturnSortedList(boolean flag){
+        context.getSharedPreferences(preferece,Context.MODE_PRIVATE).edit().putBoolean(key_list_sorted,flag).apply();
     }
 }

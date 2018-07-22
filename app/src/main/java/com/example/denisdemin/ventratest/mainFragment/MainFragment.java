@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.denisdemin.ventratest.R;
 import com.example.denisdemin.ventratest.data.model.Task;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -33,7 +32,10 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
     RecyclerView recyclerView;
 
     @BindView(R.id.fabMain)
-    FloatingActionButton floatingActionButton;
+    FloatingActionButton floatingActionButtonAdd;
+
+    @BindView(R.id.fabSort)
+    FloatingActionButton floatingActionButtonSort;
 
     EditText editTextHeader;
 
@@ -49,6 +51,8 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
 
     private Presenter mPresenter;
 
+    private List<Task> taskList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,9 +67,10 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
 
         mPresenter = new Presenter(this,getContext());
 
-        floatingActionButton.setOnClickListener(this);
+        floatingActionButtonAdd.setOnClickListener(this);
+        floatingActionButtonSort.setOnClickListener(this);
 
-        mPresenter.onViewCreated();
+        mPresenter.onViewCreated(getArguments());
 
     }
 
@@ -86,8 +91,9 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
     }
 
     @Override
-    public void showAddDialog(){
+    public void showAddDialog(String message){
         dialog.show();
+        editTextComments.setText(message);
     }
 
     @Override
@@ -123,7 +129,10 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
                 mPresenter.onDialogAdd(editTextHeader.getText().toString(),textViewDate.getText().toString(),editTextComments.getText().toString());
                 break;
             case R.id.fabMain:
-                showAddDialog();
+                showAddDialog("");
+                break;
+            case R.id.fabSort:
+                mPresenter.onSortButtonClicked();
                 break;
         }
     }
@@ -142,11 +151,13 @@ public class MainFragment extends Fragment implements IMainFragment.view, View.O
 
     @Override
     public void initRecycler(List<Task> list) {
-        recyclerView.setAdapter(new MainRecyclerAdapter(getContext(),list));
+        taskList = list;
+        recyclerView.setAdapter(new MainRecyclerAdapter(getContext(),taskList));
     }
 
     @Override
-    public void updateRecycler(List<Task> list) {
-
+    public void updateRecycler(Task task) {
+        taskList.add(task);
+        recyclerView.getAdapter().notifyItemInserted(taskList.size());
     }
 }

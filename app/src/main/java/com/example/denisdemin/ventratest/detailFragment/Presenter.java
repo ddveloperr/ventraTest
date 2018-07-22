@@ -21,6 +21,14 @@ public class Presenter implements IDetailFragment.presenter {
     }
 
     @Override
+    public void onViewCreated() {
+        mView.initView();
+        mView.initAlertDialog();
+        mView.createDateDialog();
+        mView.initSpinner();
+    }
+
+    @Override
     public void updateTask(String header, String date, String comment, String status, int position) {
         if (!header.isEmpty() && !date.isEmpty() && !comment.isEmpty() && !status.isEmpty()) {
             SharedPreffsHelper sharedPreffsHelper = new SharedPreffsHelper(context);

@@ -1,5 +1,6 @@
 package com.example.denisdemin.ventratest.mainActivity;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,10 +18,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setFragment(new MainFragment());
+
+        setFragment(new MainFragment(),setBundle(getTextIntent()));
     }
 
-    public void setFragment(@NonNull Fragment fragment){
+    private String getTextIntent(){
+        Intent intent = getIntent();
+
+        return intent.getStringExtra(Intent.EXTRA_TEXT);
+    }
+
+    private Bundle setBundle(String textIntent){
+        Bundle bundle = new Bundle();
+
+        if(textIntent!=null){
+            bundle.putBoolean("intent",true);
+            bundle.putString("text",textIntent);
+        }else{
+            bundle.putBoolean("intent",false);
+        }
+        return bundle;
+    }
+
+    public void setFragment(@NonNull Fragment fragment,@Nullable Bundle args){
+        fragment.setArguments(args);
 
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.addToBackStack(fragment.getTag()).replace(R.id.frameContainer,fragment)

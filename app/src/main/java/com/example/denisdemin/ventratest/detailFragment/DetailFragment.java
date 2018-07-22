@@ -1,6 +1,7 @@
 package com.example.denisdemin.ventratest.detailFragment;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,10 +22,12 @@ import android.widget.Toast;
 import com.example.denisdemin.ventratest.R;
 import com.example.denisdemin.ventratest.data.model.Task;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailFragment extends Fragment implements IDetailFragment.view,DialogInterface.OnClickListener {
+public class DetailFragment extends Fragment implements IDetailFragment.view,DialogInterface.OnClickListener,View.OnClickListener,DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.editText_Header)
     EditText editTextHeader;
@@ -48,6 +52,7 @@ public class DetailFragment extends Fragment implements IDetailFragment.view,Dia
     AlertDialog dialog;
 
     private static final String promptMessage="Are you sure?";
+    private DatePickerDialog datePickerDialog;
 
     @Nullable
     @Override
@@ -62,20 +67,7 @@ public class DetailFragment extends Fragment implements IDetailFragment.view,Dia
 
         ButterKnife.bind(this,view);
 
-        initView();
-        initDialog();
-        initSpinner();
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter.updateTask(editTextHeader.getText().toString(),
-                        textViewDate.getText().toString(),
-                        editTextComment.getText().toString(),
-                        spinnerStatus.getSelectedItem().toString(),
-                        getArguments().getInt("position"));
-            }
-        });
+        mPresenter.onViewCreated();
     }
 
     @Override
@@ -85,12 +77,9 @@ public class DetailFragment extends Fragment implements IDetailFragment.view,Dia
         textViewDate.setText(bundle.getString("date"));
         editTextComment.setText(bundle.getString("comment"));
 
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog();
-            }
-        });
+        buttonDelete.setOnClickListener(this);
+        textViewDate.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
     }
 
     @Override
@@ -99,7 +88,7 @@ public class DetailFragment extends Fragment implements IDetailFragment.view,Dia
     }
 
     @Override
-    public void initDialog() {
+    public void initAlertDialog() {
         dialog = new AlertDialog.Builder(getContext())
                 .setMessage(promptMessage)
                 .setPositiveButton("Yes",this)
@@ -126,13 +115,31 @@ public class DetailFragment extends Fragment implements IDetailFragment.view,Dia
     }
 
     @Override
-    public void showDialog() {
+    public void showAlertDialog() {
         dialog.show();
     }
 
     @Override
-    public void hideDialog() {
+    public void hideAlertDialog() {
         dialog.hide();
+    }
+
+    @Override
+    public void createDateDialog(){
+        datePickerDialog = new DatePickerDialog(getContext(),this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Override
+    public void showDateDialog(){
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void hideDateDialog(){
+        datePickerDialog.hide();
     }
 
 
@@ -143,6 +150,32 @@ public class DetailFragment extends Fragment implements IDetailFragment.view,Dia
                 mPresenter.deleteTask(getArguments().getInt("position"));
                 break;
         }
-        hideDialog();
+        hideAlertDialog();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.textView_date:
+                showDateDialog();
+                break;
+            case R.id.button_delete:
+                showAlertDialog();
+                break;
+            case R.id.saveButton:
+                mPresenter.updateTask(editTextHeader.getText().toString(),
+                        textViewDate.getText().toString(),
+                        editTextComment.getText().toString(),
+                        spinnerStatus.getSelectedItem().toString(),
+                        getArguments().getInt("position"));
+                break;
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        month++;
+        textViewDate.setText(new StringBuilder().append(day).append(".").append(month).append(".").append(year).toString());
+        hideDateDialog();
     }
 }
